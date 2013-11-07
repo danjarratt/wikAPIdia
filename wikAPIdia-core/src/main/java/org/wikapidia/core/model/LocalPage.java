@@ -124,7 +124,7 @@ public class LocalPage {
      * Mimics format used by Hecht and Gergle (2009 + 2010).
      * @return
      */
-    public String getTitleAndLanguage(){
+    public String getTitleAndLanguageAsString(){
         return String.format("%s (%s)", title.toString(), language.toString());
     }
 
