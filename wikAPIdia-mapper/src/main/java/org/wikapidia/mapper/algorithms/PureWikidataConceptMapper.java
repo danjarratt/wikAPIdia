@@ -48,6 +48,7 @@ public class PureWikidataConceptMapper extends ConceptMapper {
 
     @Override
     public Iterator<UniversalPage> getConceptMap(LanguageSet ls) throws DaoException {
+
         final Map<Integer, Multimap<Language, LocalId>> backend = Maps.newHashMap();
         final Map<Integer, NameSpace> nsBackend = Maps.newHashMap();
 
@@ -86,6 +87,11 @@ public class PureWikidataConceptMapper extends ConceptMapper {
             if (!backend.containsKey(univId)){
                 Multimap<Language, LocalId> mmap = HashMultimap.create();
                 backend.put(univId, mmap);
+                if (localPage.getTitle().toString().contains(":")) System.out.println(localPage);
+                if (localPage.getNameSpace().equals(NameSpace.CATEGORY)){
+                    System.out.println(localPage);
+                    System.exit(1);
+                }
                 nsBackend.put(univId, localPage.getNameSpace()); // defines the universal page as having the namespace of the first LocalPage encountered
                 numLangsCount[0]++;
             }else{
@@ -142,7 +148,7 @@ public class PureWikidataConceptMapper extends ConceptMapper {
             }
             List<File> paths = Env.getFiles(Language.WIKIDATA, FileMatcher.WIKIDATA_ITEMS, getConfig());
             if (paths.isEmpty()) {
-                throw new ConfigurationException("No wikidata file available for PurWikidataConceptMapper");
+                throw new ConfigurationException("No wikidata file available for PureWikidataConceptMapper");
             }
             return new PureWikidataConceptMapper(
                     paths.get(0),
